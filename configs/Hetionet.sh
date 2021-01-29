@@ -1,0 +1,16 @@
+input_dir="datasets/Hetionet/"
+base_output_dir="output/Hetionet/"
+total_iterations=500
+eval_every=20
+rule_base_reward="4"
+path_length="3"
+embedding_size="32"
+hidden_size="128"
+beta="0.05"
+Lambda=0.02
+learning_rate=0.0001
+train_entity_embeddings=1
+train_relation_embeddings=1
+use_entity_embeddings=1
+batch_size=128
+num_rollouts=40

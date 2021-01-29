@@ -1,0 +1,9 @@
+input_dir="datasets/FB15K-237/"
+base_output_dir="output/FB15K-237/"
+total_iterations=1000
+rule_base_reward="0"
+path_length="3"
+embedding_size="50"
+hidden_size="50"
+beta="0.02"
+Lambda=0.02
