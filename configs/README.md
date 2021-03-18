@@ -21,7 +21,7 @@ located.
 
 ```--seed```*: int. Random seed for reproducibility.
 
-```--batch_size```*: int. Size of the sampled batch by the [RelationEntityBatcher](../my_code/data/feed_data.py).
+```--batch_size```*: int. Size of the sampled batch by the [RelationEntityBatcher](../mycode/data/feed_data.py).
 
 ```--num_rollouts```*: int. Number of rollouts for each query during training.
 
