@@ -422,6 +422,41 @@ class Trainer(object):
             scores_file.write('\n')
             scores_file.write('\n')
 
+    def write_scores_file_tail(self, scores_file, final_metrics, final_metrics_rule, final_metrics_head,
+                               final_metrics_rule_head, final_metrics_tail, final_metrics_rule_tail, test_rule_count_body,
+                               test_rule_count, num_query_with_rules, num_query_with_rules_correct, total_examples):
+        metrics = ['Hits@1', 'Hits@3', 'Hits@5', 'Hits@10', 'Hits@20', 'MRR']
+        metrics_rule = ['Hits@1_rule', 'Hits@3_rule', 'Hits@5_rule', 'Hits@10_rule', 'Hits@20_rule', 'MRR_rule']
+        ranking = ['Tail:']
+        num_examples = [total_examples]
+        all_results = [[final_metrics, final_metrics_rule],
+                       [final_metrics_head, final_metrics_rule_head],
+                       [final_metrics_tail, final_metrics_rule_tail]]
+        for j in range(len(ranking)):
+            scores_file.write(ranking[j])
+            scores_file.write('\n')
+            for i in range(len(metrics)):
+                scores_file.write(metrics[i] + ': {0:7.4f}'.format(all_results[j][0][i]))
+                scores_file.write('\n')
+            for i in range(len(metrics_rule)):
+                scores_file.write(metrics_rule[i] + ': {0:7.4f}'.format(all_results[j][1][i]))
+                scores_file.write('\n')
+            scores_file.write('Rule count body: {0}/{1} = {2:6.4f}'.format(
+                int(test_rule_count_body[j]), int(num_examples[j] * self.test_rollouts),
+                test_rule_count_body[j] / (num_examples[j] * self.test_rollouts)))
+            scores_file.write('\n')
+            scores_file.write('Rule count correct: {0}/{1} = {2:6.4f}'.format(
+                int(test_rule_count[j]), int(num_examples[j] * self.test_rollouts),
+                test_rule_count[j] / (num_examples[j] * self.test_rollouts)))
+            scores_file.write('\n')
+            scores_file.write('Number of queries with at least one rule: {0}/{1} = {2:6.4f}'.format(
+                int(num_query_with_rules[j]), int(num_examples[j]), num_query_with_rules[j] / num_examples[j]))
+            scores_file.write('\n')
+            scores_file.write('Number of queries with at least one rule and correct: {0}/{1} = {2:6.4f}'.format(
+                int(num_query_with_rules_correct[j]), int(num_examples[j]), num_query_with_rules_correct[j] / num_examples[j]))
+            scores_file.write('\n')
+            scores_file.write('\n')
+
     def train(self, sess):
         fetches, feeds, feed_dict = self.io_setup()
         train_loss = 0.0
@@ -520,10 +555,6 @@ class Trainer(object):
         final_metrics_rule_tail = np.zeros(6)
         total_examples = self.test_environment.total_no_examples
 
-        if self.test_environment == self.test_test_environment:
-            scores_extended_file = open(self.output_dir + 'scores_extended.txt', 'w')
-            scores_extended_file.write('Test scores (reciprocal ranks) for all test triples \n')
-
         for episode in tqdm(self.test_environment.get_episodes()):
             batch_counter += 1
             temp_batch_size = episode.no_examples
@@ -606,20 +637,6 @@ class Trainer(object):
                 if print_paths:
                     answers = self.add_paths(b, sorted_idx, qr, start_e, se, ce, end_e, answer_pos, answers, rewards)
 
-                if self.test_environment == self.test_test_environment:
-                    scores_extended_file.write(start_e + '\t' + qr + '\t' + end_e + '\n')
-                    if answer_pos is None:
-                        scores_extended_file.write('Reciprocal rank is None \n')
-                    else:
-                        scores_extended_file.write('Reciprocal rank: {0:5.4f}'.format(1.0 / (answer_pos + 1)))
-                        scores_extended_file.write('\n')
-                    if answer_pos_rule is None:
-                        scores_extended_file.write('Reciprocal rank (rule) is None \n')
-                    else:
-                        scores_extended_file.write('Reciprocal rank (rule): {0:5.4f}'.format(1.0 /
-                                                                                             (answer_pos_rule + 1)))
-                        scores_extended_file.write('\n')
-
             final_metrics += query_metrics
             final_metrics_rule += query_metrics_rule
             final_metrics_head += query_metrics_head
@@ -650,10 +667,10 @@ class Trainer(object):
             self.write_paths_file(answers)
 
         with open(self.output_dir + 'scores.txt', 'a') as scores_file:
-            self.write_scores_file(scores_file, final_metrics, final_metrics_rule, final_metrics_head,
-                                   final_metrics_rule_head, final_metrics_tail, final_metrics_rule_tail,
-                                   test_rule_count_body, test_rule_count, num_query_with_rules,
-                                   num_query_with_rules_correct, total_examples)
+            self.write_scores_file_tail(scores_file, final_metrics, final_metrics_rule, final_metrics_head,
+                                        final_metrics_rule_head, final_metrics_tail, final_metrics_rule_tail,
+                                        test_rule_count_body, test_rule_count, num_query_with_rules,
+                                        num_query_with_rules_correct, total_examples)
 
         metrics = ['Hits@1', 'Hits@3', 'Hits@5', 'Hits@10', 'Hits@20', 'MRR']
         for i in range(len(metrics)):
