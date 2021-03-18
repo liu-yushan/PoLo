@@ -1,10 +1,4 @@
-from __future__ import absolute_import
-from __future__ import division
 import argparse
-import uuid
-import os
-import datetime
-from pprint import pprint
 
 
 def read_options():

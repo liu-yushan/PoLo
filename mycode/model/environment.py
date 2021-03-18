@@ -1,5 +1,3 @@
-from __future__ import absolute_import
-from __future__ import division
 import numpy as np
 from mycode.data.grapher import RelationEntityGrapher
 from mycode.data.feed_data import RelationEntityBatcher
