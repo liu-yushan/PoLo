@@ -1,6 +1,6 @@
 # Neural Multi-Hop Reasoning With Logical Rules on Biomedical Knowledge Graphs
 
-Tensorflow implementation of the method PoLo.
+Tensorflow implementation of the method PoLo from this [paper](https://arxiv.org/abs/2103.10367).
 
 
 <h2> Credits</h2>
@@ -43,5 +43,7 @@ Where:
 ```test.txt``` contains all test triples.
 
 ```graph.txt``` contains all triples of the KG except for ```dev.txt```, ```test.txt```, the inverses of ```dev.txt```, and the inverses of ```test.txt```.
+
+For Hetionet, the complete graph is split into ```graph.txt``` (no inverse triples) and ```graph_inverses.txt``` (inverse triples) because of the file size constraints on GitHub.
 
 Finally, two vocab files are needed, one for the entities and one for the relations. These can be created by using the [```create_vocab.py``` file](mycode/data/preprocessing_scripts/create_vocab.py).
