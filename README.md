@@ -9,7 +9,7 @@ This implementation is based on [Shehzaad Dhuliawala's repository](https://githu
 
 <h2> How To Run </h2>
 
-The dependencies are specified in [requirements.txt](requirements.txt). To run PoLo, use one of the config files or create your own. For an explanation of each hyperparameter, refer to the [README file in the configs folder](configs/README.md).
+The dependencies are specified in [requirements.txt](requirements.txt) (which can be installed via, e.g., ```pip install -r requirements.txt```). To run PoLo, use one of the config files or create your own. For an explanation of each hyperparameter, refer to the [README file in the configs folder](configs/README.md).
 
 **Note**: The Hetionet graph is split into ```graph_triples.txt``` (no inverse triples) and ```graph_inverses.txt``` (inverse triples) because of the file size constraints on GitHub.
 These two files **need to be combined into one file** (with the name ```graph.txt```) before running the code.
