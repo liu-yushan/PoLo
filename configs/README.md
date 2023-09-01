@@ -43,7 +43,7 @@ located.
 
 ```--gamma```*: float. Discount factor for REINFORCE.
 
-```--Lambda```*: float. Discount factor for the baseline.
+```--Lambda```*: float. Discount factor for the baseline. (Note that this is not the Lambda introduced in the paper (Equation 4). The Lambda from the paper is set to 1. A factor be added to `mycode/model/rules.py`, line 33, to modify this Lambda.)
 
 ```--grad_clip_norm```*: int. Clipping ratio for the gradient.
 
